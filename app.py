@@ -13,13 +13,16 @@ if st.button("Μετάφραση"):
     if not api_key:
         st.error("Βάλε πρώτα το κλειδί!")
     else:
-        client = openai.OpenAI(api_key=api_key)
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": "Analyse the input, translate to the target language and explain the context."},
-                {"role": "user", "content": f"Translate to {language} with {tone} tone: {text}"}
-            ]
-        )
-        st.success(response.choices.message.content)
-        
+        try:
+            client = openai.OpenAI(api_key=api_key)
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": "Analyse the input, translate to the target language and explain the context."},
+                    {"role": "user", "content": f"Translate to {language} with {tone} tone: {text}"}
+                ]
+            )
+            st.success(response.choices.message.content)
+        except Exception as e:
+            st.error(f"Σφάλμα: {e}")
+            
